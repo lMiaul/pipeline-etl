@@ -1,0 +1,17 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de datos descargados o temporales (No subir al repo)
+hr_data.csv
+.localstack/
+
+# Archivos de SO
+.DS_Store
+Thumbs.db

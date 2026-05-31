@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Emulador de AWS (Floci / LocalStack)
+  localstack:
+    image: floci/floci:latest
+    container_name: local-aws-emulator
+    ports:
+      - "4566:4566"
+    environment:
+      # Definimos los servicios que vamos a simular
+      - SERVICES=s3,lambda,iam
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "./.localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  # Base de datos destino (simulando Amazon RDS)
+  postgres:
+    image: postgres:15-alpine
+    container_name: local-rds
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=data_engineer
+      - POSTGRES_PASSWORD=supersecret
+      - POSTGRES_DB=hr_analytics
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
